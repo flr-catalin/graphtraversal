@@ -81,6 +81,9 @@ public class DemoApp {
 		mxStyleUtils.setCellStyles(graphComponent.getGraph().getModel(),
                 cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
 		
+		mxStyleUtils.setCellStyles(graphComponent.getGraph().getModel(),
+				new Object[] { graphAdapter.getVertexToCellMap().get(FAGARAS) }, mxConstants.STYLE_FILLCOLOR, "red");
+		
 		graphAdapter.setCellsMovable(false);
 		graphAdapter.setEdgeLabelsMovable(false);
 		graphAdapter.setVertexLabelsMovable(false);
