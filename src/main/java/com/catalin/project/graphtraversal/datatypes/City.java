@@ -1,4 +1,4 @@
-package com.catalin.project.graphtraversal.reference;
+package com.catalin.project.graphtraversal.datatypes;
 
 public enum City {
 
