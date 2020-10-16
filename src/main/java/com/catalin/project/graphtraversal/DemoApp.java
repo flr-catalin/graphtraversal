@@ -8,12 +8,12 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.jgrapht.Graph;
 import org.jgrapht.ext.JGraphXAdapter;
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 import com.catalin.project.graphtraversal.algorithm.AlgorithmFactory;
 import com.catalin.project.graphtraversal.datatypes.City;
-import com.catalin.project.graphtraversal.datatypes.EmptyEdge;
+import com.catalin.project.graphtraversal.datatypes.WeightedEdge;
 import com.catalin.project.graphtraversal.util.GraphBuilder;
 import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.model.mxGraphModel;
@@ -27,9 +27,9 @@ public class DemoApp {
 	
 	private static mxCompactTreeLayout layout;
 	
-	private static Graph<City, EmptyEdge> graph;
+	private static DefaultDirectedWeightedGraph<City, WeightedEdge> graph;
 	
-	private static JGraphXAdapter<City, EmptyEdge> graphAdapter;
+	private static JGraphXAdapter<City, WeightedEdge> graphAdapter;
 	
 	public static final int JFRAME_WIDTH = 1024;
 	
@@ -61,6 +61,8 @@ public class DemoApp {
 		
 		AlgorithmFactory.getInstance().DFS(graph, FAGARAS);
 		AlgorithmFactory.getInstance().BFS(graph, FAGARAS);
+		AlgorithmFactory.getInstance().DLS(graph, FAGARAS, 3);
+		AlgorithmFactory.getInstance().IDS(graph, FAGARAS, 6);
 	}
 
 	private static mxCompactTreeLayout executeLayout() {

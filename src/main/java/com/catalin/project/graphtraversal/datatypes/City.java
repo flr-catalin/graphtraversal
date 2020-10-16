@@ -10,7 +10,7 @@ public enum City {
 	RAMNICU("RA"), 
 	PITESTI("PI"), 
 	GIURGIU("GI"), 
-	VRANCEA("VR"), 
+	URZICENI("VR"), 
 	ZERIND("ZE"), 
 	TIMISOARA("TI"), 
 	CRAIOVA("CR"), 

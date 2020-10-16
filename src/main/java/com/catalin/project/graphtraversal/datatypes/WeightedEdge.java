@@ -1,14 +1,15 @@
 package com.catalin.project.graphtraversal.datatypes;
 
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
 
-public class EmptyEdge extends DefaultEdge {
+public class WeightedEdge extends DefaultWeightedEdge {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	public String toString() {
-		return "";
+		return String.valueOf((int) getWeight());
 	}
+
 
 }
