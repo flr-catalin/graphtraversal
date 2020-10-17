@@ -22,20 +22,35 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxStyleUtils;
 
+/**
+ * This is the JPanel implementation for directed weigthed graphs.
+ * 
+ * @author Catalin Florea
+ */
 public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
+	/** The JGraphT graph */
 	private DefaultDirectedGraph<City, WeightedEdge> graph;
 	
+	/** The mxGraph graph component */
 	private mxGraphComponent graphComponent;
 	
+	/** The JGraph to mxGraph adapter. */
 	private JGraphXAdapter<City, WeightedEdge> graphAdapter;
 	
+	/** The animator thread. */
 	private Thread animator;
 	
+	/** The framerate in milliseconds */
 	private int delay = 750;
 	
+	/**
+	 * Creates a new directed weigthed graph panel object.
+	 * 
+	 * @param graph the graph
+	 */
 	public DirectedWeightedGraphPanel(DefaultDirectedWeightedGraph<City, WeightedEdge> graph) {
 		this.graph = graph;
 		this.graphAdapter = new JGraphXAdapter<City, WeightedEdge>(graph);
@@ -47,6 +62,9 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		animator.start();
 	}
 	
+	/**
+	 * Initialises the graph component.
+	 */
 	private void initialiseGraphComponent() {
 		mxCompactTreeLayout compactTreeLayout = new mxCompactTreeLayout(graphAdapter);
 		
@@ -65,6 +83,11 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		graphAdapter.setVertexLabelsMovable(false);
 	}
 	
+	/**
+	 * Gets the mxGraph graph component.
+	 * 
+	 * @return the mxGraph graph component
+	 */
 	public mxGraphComponent getGraphComponent() {
 		return this.graphComponent;
 	}
@@ -76,6 +99,9 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 				mxConstants.STYLE_FILLCOLOR, color);
 	}
 	
+	/**
+	 * The animation code.
+	 */
 	@Override
 	public void run() {
 //		DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);

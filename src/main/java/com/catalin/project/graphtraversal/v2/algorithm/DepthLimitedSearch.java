@@ -9,16 +9,34 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
 
+/**
+ * This class implements the depth limited search.
+ * 
+ * @author Catalin Florea
+ *
+ * @param <V> the vertex type
+ */
 public class DepthLimitedSearch<V> {
 	
+	/** The traversal set. */
 	private Set<V> traversalSet;
 	
+	/** The starting vertex. */
 	private V startingVertex;
 	
+	/** The graph. */
 	private DefaultDirectedGraph<V, WeightedEdge> graph;
 	
+	/** The limit. */
 	private int limit;
 	
+	/**
+	 * Creates a new depth limited search object.
+	 * 
+	 * @param startingVertex the starting vertex
+	 * @param graph the graph
+	 * @param limit the depth limit
+	 */
 	public DepthLimitedSearch(V startingVertex, DefaultDirectedGraph<V, WeightedEdge> graph, int limit) {
 		super();
 		this.traversalSet = new LinkedHashSet<>();
@@ -27,10 +45,21 @@ public class DepthLimitedSearch<V> {
 		this.limit = limit;
 	}
 	
+	/**
+	 * Executes the search.
+	 */
 	public void execute() {
 		execute(graph, startingVertex, limit);
 	}
 
+	/**
+	 * The recursive search implementation.
+	 * 
+	 * @param graph the graph
+	 * @param startingVertex the starting vertex
+	 * @param limit the depth limit
+	 * @return whether the goal node was found
+	 */
 	public boolean execute(DefaultDirectedGraph<V, WeightedEdge> graph, V startingVertex, int limit) {
 		if (limit <= 0) {
 			return false;
@@ -48,6 +77,11 @@ public class DepthLimitedSearch<V> {
 		return false;
 	}
 
+	/**
+	 * Gets the traversal set.
+	 * 
+	 * @return the traversal set
+	 */
 	public Set<V> getTraversalSet(int setCounter) {
 		return this.traversalSet;
 	}

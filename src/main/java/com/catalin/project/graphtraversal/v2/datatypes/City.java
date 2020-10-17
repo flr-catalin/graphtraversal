@@ -1,5 +1,10 @@
 package com.catalin.project.graphtraversal.v2.datatypes;
 
+/**
+ * The city vertex implementation.
+ * 
+ * @author Catalin Florea
+ */
 public enum City {
 
 	FAGARAS("FA"),
@@ -23,41 +28,22 @@ public enum City {
 	MEHADIA("ME"), 
 	NEAMT("NE");
 	
+	/** The two letter code. */
 	private String twoLetterCode;
 	
-	City(String value) {
-		this.twoLetterCode = value;
-	}
-
-	public String get2LC() {
-		return this.twoLetterCode;
-	}
-	
-	public City get(String twoLetterCode) {
-		if (twoLetterCode == null) {
-			return null;
-		}
-		
-		for (City city : City.values()) {
-			if (twoLetterCode.equals(city.get2LC())) {
-				return city;
-			}
-		}
-		
-		return null;
-	}
-	
-	public String getTwoLetterCode() {
-		return twoLetterCode;
-	}
-
-	public void setTwoLetterCode(String twoLetterCode) {
+	/**
+	 * Creates a new city object.
+	 * 
+	 * @param twoLetterCode the two letter code
+	 */
+	City(String twoLetterCode) {
 		this.twoLetterCode = twoLetterCode;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString() {
-		return this.get2LC();
+		return this.twoLetterCode;
 	}
 	
 }

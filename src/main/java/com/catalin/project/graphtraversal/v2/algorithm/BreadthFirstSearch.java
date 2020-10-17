@@ -11,16 +11,33 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
 
+/**
+ * This class implements the breadth first search.
+ * 
+ * @author Catalin Florea
+ *
+ * @param <V> the vertex type
+ */
 public class BreadthFirstSearch<V> {
 	
+	/** The vertex queue. */
 	private Queue<V> vertexQueue;
 	
+	/** The traversal set. */
 	private Set<V> traversalSet;
 	
+	/** The starting vertex. */
 	private V startingVertex;
 	
+	/** The graph. */
 	private DefaultDirectedGraph<V, WeightedEdge> graph;
 	
+	/**
+	 * Creates a new breadth first search object.
+	 * 
+	 * @param startingVertex the starting vertex
+	 * @param graph the graph
+	 */
 	public BreadthFirstSearch(V startingVertex, DefaultDirectedGraph<V, WeightedEdge> graph) {
 		super();
 		this.vertexQueue = new LinkedList<>();
@@ -29,6 +46,9 @@ public class BreadthFirstSearch<V> {
 		this.graph = graph;
 	}
 
+	/**
+	 * Executes the search.
+	 */
 	public void execute() {
 		vertexQueue.add(startingVertex);
 		
@@ -45,6 +65,11 @@ public class BreadthFirstSearch<V> {
 		}
 	}
 	
+	/**
+	 * Gets the traversal set.
+	 * 
+	 * @return the traversal set
+	 */
 	public Set<V> getTraversalSet() {
 		return this.traversalSet;
 	}

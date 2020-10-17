@@ -26,18 +26,37 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import com.catalin.project.graphtraversal.v2.datatypes.City;
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
 
+/**
+ * Utilitary class for building graphs.
+ *
+ * @author Catalin Florea
+ */
 public class GraphBuilder {
 	
+	/** The instance. */
 	private static final GraphBuilder INSTANCE = new GraphBuilder();
 	
+	/**
+	 * The protected constructor.
+	 **/
 	protected GraphBuilder() {
 		super();
 	}
 	
+	/**
+	 * Gets the single instance.
+	 * 
+	 * @return the instance
+	 */
 	public static GraphBuilder getInstance() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Creates a default directed weighted graph.
+	 * 
+	 * @return the default directed weighted graph.
+	 */
 	public DefaultDirectedWeightedGraph<City, WeightedEdge> buildDefaultDirectedWeightGraph() {
 		DefaultDirectedWeightedGraph<City, WeightedEdge> graph = new DefaultDirectedWeightedGraph<>(WeightedEdge.class);
 		
@@ -47,25 +66,26 @@ public class GraphBuilder {
 		return graph;
 	}
 
+	/**
+	 * Adds the weighted edges.
+	 * 
+	 * @param graph the graph
+	 */
 	private void addWeigthedEdges(DefaultDirectedWeightedGraph<City, WeightedEdge> graph) {
 		WeightedEdge fagaras_sibiu = graph.addEdge(FAGARAS, SIBIU);
 		WeightedEdge fagaras_bucuresti = graph.addEdge(FAGARAS, BUCURESTI);
 		WeightedEdge sibiu_oradea = graph.addEdge(SIBIU, ORADEA);
 		WeightedEdge sibiu_arad = graph.addEdge(SIBIU, ARAD);
 		WeightedEdge sibiu_ramnicu = graph.addEdge(SIBIU, RAMNICU);
-//		WeightedEdge bucuresti_pitesti = graph.addEdge(BUCURESTI, PITESTI);
 		WeightedEdge bucuresti_giurgiu = graph.addEdge(BUCURESTI, GIURGIU);
 		WeightedEdge bucuresti_urziceni = graph.addEdge(BUCURESTI, URZICENI);
 		WeightedEdge oradea_zerind = graph.addEdge(ORADEA, ZERIND);
 		WeightedEdge arad_timisoara = graph.addEdge(ARAD, TIMISOARA);
-//		WeightedEdge arad_zerind = graph.addEdge(ARAD, ZERIND);
 		WeightedEdge ramnicu_craiova = graph.addEdge(RAMNICU, CRAIOVA);
 		WeightedEdge ramnicu_pitesti = graph.addEdge(RAMNICU, PITESTI);
-//		WeightedEdge pitesti_craiova = graph.addEdge(PITESTI, CRAIOVA);
 		WeightedEdge urziceni_vaslui = graph.addEdge(URZICENI, VASLUI);
 		WeightedEdge urziceni_harsova = graph.addEdge(URZICENI, HARSOVA);
 		WeightedEdge timisoara_lugoj = graph.addEdge(TIMISOARA, LUGOJ);
-//		WeightedEdge craiova_drobeta = graph.addEdge(CRAIOVA, DROBETA);
 		WeightedEdge harsova_eforie = graph.addEdge(HARSOVA, EFORIE);
 		WeightedEdge vaslui_iasi = graph.addEdge(VASLUI, IASI);
 		WeightedEdge lugoj_mehadia = graph.addEdge(LUGOJ, MEHADIA);
@@ -74,18 +94,14 @@ public class GraphBuilder {
 		
 		graph.setEdgeWeight(oradea_zerind, 71);
 		graph.setEdgeWeight(sibiu_oradea, 151);
-//		graph.setEdgeWeight(arad_zerind, 75);
 		graph.setEdgeWeight(sibiu_arad, 140);
 		graph.setEdgeWeight(arad_timisoara, 118);
 		graph.setEdgeWeight(timisoara_lugoj, 111);
 		graph.setEdgeWeight(lugoj_mehadia, 70);
 		graph.setEdgeWeight(mehadia_drobeta, 75);
-//		graph.setEdgeWeight(craiova_drobeta, 120);
 		graph.setEdgeWeight(ramnicu_craiova, 146);
 		graph.setEdgeWeight(sibiu_ramnicu, 80);
-//		graph.setEdgeWeight(pitesti_craiova, 138);
 		graph.setEdgeWeight(ramnicu_pitesti, 97);
-//		graph.setEdgeWeight(bucuresti_pitesti, 101);
 		graph.setEdgeWeight(fagaras_sibiu, 99);
 		graph.setEdgeWeight(fagaras_bucuresti, 211);
 		graph.setEdgeWeight(bucuresti_giurgiu, 99);
@@ -97,6 +113,11 @@ public class GraphBuilder {
 		graph.setEdgeWeight(iasi_neamt, 87);
 	}
 
+	/**
+	 * Adds the vertices.
+	 * 
+	 * @param graph the graph
+	 */
 	private void addVertices(DefaultDirectedWeightedGraph<City, WeightedEdge> graph) {
 		graph.addVertex(FAGARAS);
 		graph.addVertex(SIBIU);
