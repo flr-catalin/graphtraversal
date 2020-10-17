@@ -1,4 +1,4 @@
-package com.catalin.project.graphtraversal.datatypes;
+package com.catalin.project.graphtraversal.v2.datatypes;
 
 public enum City {
 
@@ -24,8 +24,6 @@ public enum City {
 	NEAMT("NE");
 	
 	private String twoLetterCode;
-	
-	private boolean isDiscovered;
 	
 	City(String value) {
 		this.twoLetterCode = value;
@@ -55,18 +53,6 @@ public enum City {
 
 	public void setTwoLetterCode(String twoLetterCode) {
 		this.twoLetterCode = twoLetterCode;
-	}
-
-	public boolean isDiscovered() {
-		return isDiscovered;
-	}
-	
-	public boolean isNotDiscovered() {
-		return !isDiscovered;
-	}
-
-	public void setDiscovered(boolean isSelected) {
-		this.isDiscovered = isSelected;
 	}
 
 	@Override

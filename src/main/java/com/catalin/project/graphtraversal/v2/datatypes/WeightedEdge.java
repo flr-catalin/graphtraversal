@@ -1,4 +1,4 @@
-package com.catalin.project.graphtraversal.datatypes;
+package com.catalin.project.graphtraversal.v2.datatypes;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -10,6 +10,5 @@ public class WeightedEdge extends DefaultWeightedEdge {
 	public String toString() {
 		return String.valueOf((int) getWeight());
 	}
-
 
 }
