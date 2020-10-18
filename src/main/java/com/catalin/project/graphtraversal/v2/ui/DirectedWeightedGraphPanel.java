@@ -193,8 +193,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		GraphModifier.getInstance().clearHeuristics(graphAdapter);
 		GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
 		UniformCostSearch ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
-		ucs.execute(VASLUI);
-		List<Set<City>> ucsTraversalSets = Arrays.asList(ucs.getTraversalSet());
+		
 		
 		while (true) {
 			GraphModifier.getInstance().clearHeuristics(graphAdapter);
@@ -205,7 +204,10 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 			animateTraversalSets(idsTraversalSets, "Iterative Deepening Search - Limit: " + idsLimit, VASLUI);
 			GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);
 			animateTraversalSets(gbfsTraversalSets, "Best First Search", EFORIE);
+			GraphModifier.getInstance().clearHeuristics(graphAdapter);
 			GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
+			ucs.execute(VASLUI);
+			List<Set<City>> ucsTraversalSets = Arrays.asList(ucs.getTraversalSet());
 			animateTraversalSets(ucsTraversalSets, "Uniform Cost Search", VASLUI);
 		}
 	}

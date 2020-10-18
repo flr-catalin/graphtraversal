@@ -36,7 +36,7 @@ public class MainFrame extends JFrame {
 		DirectedWeightedGraphPanel directedWeightedGraphPanel = new DirectedWeightedGraphPanel(graphBuilder.buildDefaultDirectedWeightGraph());
 		add(directedWeightedGraphPanel.getGraphComponent());
 
-		this.slider = new JSlider(30, 100);
+		this.slider = new JSlider(20, 100);
 		this.slider.setMajorTickSpacing(10);
 		this.slider.setMinorTickSpacing(1);
 		this.slider.setPaintTicks(true);
@@ -46,7 +46,7 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				directedWeightedGraphPanel.setDelay(slider.getValue() != 0 ? slider.getValue() * 10 : 1);
+				directedWeightedGraphPanel.setDelay(slider.getValue() * 10);
 			}
 			
 		});
