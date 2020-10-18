@@ -59,8 +59,35 @@ public class DepthFirstSearch<V> {
 				
 				List<V> neighborListOf = Graphs.successorListOf(graph, startingVertex);
 				Collections.reverse(neighborListOf);
-				for (V city : neighborListOf) {
-					vertexStack.push(city);
+				for (V vertex : neighborListOf) {
+					vertexStack.push(vertex);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Executes the search with a goal.
+	 * 
+	 * @param goalVertex the goal
+	 */
+	public void execute(V goalVertex) {
+		vertexStack.push(startingVertex);
+		if (startingVertex.equals(goalVertex)) {
+			return;
+		}
+		
+		while (!vertexStack.isEmpty()) {
+			startingVertex = vertexStack.pop();
+			if (!traversalSet.contains(startingVertex)) {
+				traversalSet.add(startingVertex);
+				if (startingVertex.equals(goalVertex)) {
+					return;
+				}
+				List<V> neighborListOf = Graphs.successorListOf(graph, startingVertex);
+				Collections.reverse(neighborListOf);
+				for (V vertex : neighborListOf) {
+					vertexStack.push(vertex);
 				}
 			}
 		}

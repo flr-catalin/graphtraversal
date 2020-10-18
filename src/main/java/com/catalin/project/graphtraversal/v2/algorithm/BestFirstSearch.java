@@ -1,25 +1,27 @@
 package com.catalin.project.graphtraversal.v2.algorithm;
 
+import java.util.Comparator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
+import com.catalin.project.graphtraversal.v2.datatypes.City;
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
 
 /**
- * This class implements the breadth first search.
+ * This class implements the best first search.
  * 
  * @author Catalin Florea
  *
  * @param <V> the vertex type
  */
-public class BreadthFirstSearch<V> {
-	
+public class BestFirstSearch<V> {
+
 	/** The vertex queue. */
 	private Queue<V> vertexQueue;
 	
@@ -31,21 +33,37 @@ public class BreadthFirstSearch<V> {
 	
 	/** The graph. */
 	private DefaultDirectedGraph<V, WeightedEdge> graph;
-	
+
 	/**
-	 * Creates a new breadth first search object.
+	 * Creates a new best first search object.
 	 * 
 	 * @param startingVertex the starting vertex
 	 * @param graph the graph
 	 */
-	public BreadthFirstSearch(V startingVertex, DefaultDirectedGraph<V, WeightedEdge> graph) {
+	public BestFirstSearch(V startingVertex, DefaultDirectedGraph<V, WeightedEdge> graph) {
 		super();
-		this.vertexQueue = new LinkedList<>();
+		this.vertexQueue = new PriorityQueue<>(new Comparator<V>() {
+
+			// TODO change City from enum to class, make it implement getHeuristic and add it to the generic
+			
+			@Override
+			public int compare(V o1, V o2) {
+				if (o1 instanceof City && o2 instanceof City) {
+					if (((City) o1).getHeuristic() > ((City) o2).getHeuristic()) {
+						return 1;
+					} else if (((City) o1).getHeuristic() < ((City) o2).getHeuristic()) {
+						return -1;
+					}
+				}
+				return 0;
+			}
+			
+		});
 		this.traversalSet = new LinkedHashSet<>();
 		this.startingVertex = startingVertex;
 		this.graph = graph;
 	}
-
+	
 	/**
 	 * Executes the search.
 	 */
@@ -105,5 +123,5 @@ public class BreadthFirstSearch<V> {
 	public Set<V> getTraversalSet() {
 		return this.traversalSet;
 	}
-
+	
 }

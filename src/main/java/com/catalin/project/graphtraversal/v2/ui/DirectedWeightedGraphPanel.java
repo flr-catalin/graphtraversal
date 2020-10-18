@@ -1,19 +1,28 @@
 package com.catalin.project.graphtraversal.v2.ui;
 
+import static com.catalin.project.graphtraversal.v2.datatypes.City.EFORIE;
 import static com.catalin.project.graphtraversal.v2.datatypes.City.FAGARAS;
+import static com.catalin.project.graphtraversal.v2.datatypes.City.VASLUI;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
+import com.catalin.project.graphtraversal.v2.algorithm.BestFirstSearch;
+import com.catalin.project.graphtraversal.v2.algorithm.BreadthFirstSearch;
+import com.catalin.project.graphtraversal.v2.algorithm.DepthFirstSearch;
+import com.catalin.project.graphtraversal.v2.algorithm.DepthLimitedSearch;
 import com.catalin.project.graphtraversal.v2.algorithm.IterativeDeepeningSearch;
 import com.catalin.project.graphtraversal.v2.datatypes.City;
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
@@ -45,7 +54,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	private Thread animator;
 	
 	/** The framerate in milliseconds */
-	private int delay = 750;
+	private int delay = 500;
 	
 	/**
 	 * Creates a new directed weigthed graph panel object.
@@ -123,62 +132,80 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
-//		BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
-//		bfs.execute();
-//		Set<City> traversalSet = bfs.getTraversalSet();
-//		List<Set<City>> traversalSets = Arrays.asList(traversalSet);
+		BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
+		bfs.execute(VASLUI);
+		List<Set<City>> bfsTraversalSets = Arrays.asList(bfs.getTraversalSet());
 
-//		DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
-//		dfs.execute();
-//		Set<City> traversalSet = dfs.getTraversalSet();
-//		List<Set<City>> traversalSets = Arrays.asList(traversalSet);
+		DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
+		dfs.execute(VASLUI);
+		List<Set<City>> dfsTraversalSets = Arrays.asList(dfs.getTraversalSet());
 		
-//		DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, 3);
-//		dls.execute();
-//		Set<City> traversalSet = dls.getTraversalSet();
-//		List<Set<City>> traversalSets = Arrays.asList(traversalSet);
+		int dlsLimit = 3;
+		DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, dlsLimit);
+		dls.execute(VASLUI);
+		List<Set<City>> dlsTraversalSets = Arrays.asList(dls.getTraversalSet());
 
-		IterativeDeepeningSearch<City> ids = new IterativeDeepeningSearch<>(FAGARAS, graph, 5);
-		ids.execute();
-		List<Set<City>> traversalSets = ids.getTraversalSets();
+		int idsLimit = 5;
+		IterativeDeepeningSearch<City> ids = new IterativeDeepeningSearch<>(FAGARAS, graph, idsLimit);
+		ids.execute(VASLUI);
+		List<Set<City>> idsTraversalSets = ids.getTraversalSets();
 		
-		long beforeTime, timeDiff, sleep;
-		
-		beforeTime = System.currentTimeMillis();
-		
+		BestFirstSearch<City> gbfs = new BestFirstSearch<>(FAGARAS, graph);
+		gbfs.execute(EFORIE);
+		Set<City> traversalSet = gbfs.getTraversalSet();
+		List<Set<City>> gbfsTraversalSets = Arrays.asList(traversalSet);
+
 		while (true) {
-			for (Set<City> set : traversalSets) {
-				Iterator<City> setIterator = set.iterator();
-				
-				while (setIterator.hasNext()) {
-					setCellColor(setIterator.next(), "red");
-					
-					timeDiff = System.currentTimeMillis() - beforeTime;
-					sleep = delay - timeDiff;
-					
-					if (sleep < 0) {
-						sleep = 2;
-					}
-					
-					try {
-						Thread.sleep(sleep);
-					} catch (InterruptedException e) {
-						String message = String.format("Thread interrupted: %s", e.getMessage());
-						JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-					}
+			animateTraversalSets(bfsTraversalSets, "Breadth First Search", VASLUI);
+			animateTraversalSets(dfsTraversalSets, "Depth First Search", VASLUI);
+			animateTraversalSets(dlsTraversalSets, "Depth Limited Search - Limit: " + dlsLimit, VASLUI);
+			animateTraversalSets(idsTraversalSets, "Iterative Deepening Search - Limit: " + idsLimit, VASLUI);
+			animateTraversalSets(gbfsTraversalSets, "Best First Search", EFORIE);
+		}
+	}
 
-					beforeTime = System.currentTimeMillis();
+	/**
+	 * Animates the traversal sets with a goal.
+	 * 
+	 * @param traversalSets the traversal sets
+	 * @param title the new window title
+	 * @param goal the goal
+	 */
+	private void animateTraversalSets(List<Set<City>> traversalSets, String title, City goalCity) {
+		JFrame mainFrame = (JFrame) SwingUtilities.getRoot(graphComponent);
+		mainFrame.setTitle(title);
+		
+		long beforeTime = System.currentTimeMillis();
+		
+		for (Set<City> set : traversalSets) {
+			Iterator<City> setIterator = set.iterator();
+			
+			while (setIterator.hasNext()) {
+				City next = setIterator.next();
+				setCellColor(next, "red");
+				
+				if (goalCity != null && !setIterator.hasNext() && goalCity.equals(next)) {
+					setCellColor(next, "blue");
 				}
 				
-				clearCellColor();
+				long timeDiff = System.currentTimeMillis() - beforeTime;
+				long sleep = delay - timeDiff;
+				
+				if (sleep < 0) {
+					sleep = 2;
+				}
 				
 				try {
-					Thread.sleep(150);
+					Thread.sleep(sleep);
 				} catch (InterruptedException e) {
 					String message = String.format("Thread interrupted: %s", e.getMessage());
 					JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 				}
+
+				beforeTime = System.currentTimeMillis();
 			}
+			
+			clearCellColor();
 		}
 	}
 	

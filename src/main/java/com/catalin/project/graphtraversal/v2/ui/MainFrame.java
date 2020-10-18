@@ -15,9 +15,6 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	/** The title of the main frame. */
-	private final static String TITLE = "Title";
-	
 	/**
 	 * Creates a new main frame object.
 	 */
@@ -36,7 +33,6 @@ public class MainFrame extends JFrame {
 		setResizable(false);
 		pack();
 		
-		setTitle(TITLE);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

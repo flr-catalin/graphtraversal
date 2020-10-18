@@ -51,6 +51,15 @@ public class DepthLimitedSearch<V> {
 	public void execute() {
 		execute(graph, startingVertex, limit);
 	}
+	
+	/**
+	 * Executes the search with a goal.
+	 * 
+	 * @param goalVertex the goal
+	 */
+	public void execute(V goalVertex) {
+		execute(graph, startingVertex, limit, goalVertex);
+	}
 
 	/**
 	 * The recursive search implementation.
@@ -68,8 +77,38 @@ public class DepthLimitedSearch<V> {
 		traversalSet.add(startingVertex);
 		
 		List<V> neighborListOf = Graphs.successorListOf(graph, startingVertex);
-		for (V city : neighborListOf) {
-			if (execute(graph, city, limit - 1)) {
+		for (V vertex : neighborListOf) {
+			if (execute(graph, vertex, limit - 1)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * The recursive search with goal implementation.
+	 * 
+	 * @param graph the graph
+	 * @param startingVertex the starting vertex
+	 * @param limit the depth limit
+	 * @param goalVertex the goal vertex
+	 * @return whether the goal node was found
+	 */
+	public boolean execute(DefaultDirectedGraph<V, WeightedEdge> graph, V startingVertex, int limit, V goalVertex) {
+		if (limit == 0) {
+			return false;
+		}
+		
+		traversalSet.add(startingVertex);
+		
+		if (traversalSet.contains(goalVertex)) {
+			return true;
+		}
+		
+		List<V> neighborListOf = Graphs.successorListOf(graph, startingVertex);
+		for (V vertex : neighborListOf) {
+			if (execute(graph, vertex, limit - 1, goalVertex)) {
 				return true;
 			}
 		}

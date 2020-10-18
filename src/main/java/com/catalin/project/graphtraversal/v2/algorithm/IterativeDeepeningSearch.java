@@ -17,7 +17,7 @@ import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
  */
 public class IterativeDeepeningSearch<V> {
 
-	/** The traversal set. */
+	/** The traversal sets. */
 	private List<Set<V>> traversalSets;
 	
 	/** The starting vertex. */
@@ -28,7 +28,6 @@ public class IterativeDeepeningSearch<V> {
 	
 	/** The limit. */
 	private int limit;
-	
 	
 	/**
 	 * Creates a new iterative deepening search object.
@@ -52,6 +51,22 @@ public class IterativeDeepeningSearch<V> {
 			DepthLimitedSearch<V> dls = new DepthLimitedSearch<V>(startingVertex, graph, i);
 			dls.execute();
 			traversalSets.add(dls.getTraversalSet());
+		}
+	}
+	
+	/**
+	 * Executes the search with a goal.
+	 * 
+	 * @param goalVertex the goal
+	 */
+	public void execute(V goalVertex) {
+		for (int i = 1; i <= limit; i++) {
+			DepthLimitedSearch<V> dls = new DepthLimitedSearch<V>(startingVertex, graph, i);
+			dls.execute(goalVertex);
+			traversalSets.add(dls.getTraversalSet());
+			if (dls.getTraversalSet().contains(goalVertex)) {
+				return;
+			}
 		}
 	}
 	
