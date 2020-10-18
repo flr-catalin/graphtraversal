@@ -1,5 +1,9 @@
 package com.catalin.project.graphtraversal.v2.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
@@ -11,8 +15,21 @@ import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
  *
  * @param <V> the vertex type
  */
-public class IterativeDeepeningSearch<V> extends DepthLimitedSearch<V> {
+public class IterativeDeepeningSearch<V> {
 
+	/** The traversal set. */
+	private List<Set<V>> traversalSets;
+	
+	/** The starting vertex. */
+	private V startingVertex;
+	
+	/** The graph. */
+	private DefaultDirectedGraph<V, WeightedEdge> graph;
+	
+	/** The limit. */
+	private int limit;
+	
+	
 	/**
 	 * Creates a new iterative deepening search object.
 	 * 
@@ -21,20 +38,30 @@ public class IterativeDeepeningSearch<V> extends DepthLimitedSearch<V> {
 	 * @param limit the limit
 	 */
 	public IterativeDeepeningSearch(V startingVertex, DefaultDirectedGraph<V, WeightedEdge> graph, int limit) {
-		super(startingVertex, graph, limit);
+		this.traversalSets = new ArrayList<>();
+		this.startingVertex = startingVertex;
+		this.graph = graph;
+		this.limit = limit;
 	}
 
 	/**
 	 * Executes the search.
 	 */
-	public boolean execute(DefaultDirectedGraph<V, WeightedEdge> graph, V startingVertex, int limit) {
+	public void execute() {
 		for (int i = 1; i <= limit; i++) {
-			if (super.execute(graph, startingVertex, i)) {
-				return true;
-			}
+			DepthLimitedSearch<V> dls = new DepthLimitedSearch<V>(startingVertex, graph, i);
+			dls.execute();
+			traversalSets.add(dls.getTraversalSet());
 		}
-		
-		return false;
+	}
+	
+	/**
+	 * Gets the traversal sets.
+	 * 
+	 * @return the traversal sets
+	 */
+	public List<Set<V>> getTraversalSets() {
+		return this.traversalSets;
 	}
 
 }

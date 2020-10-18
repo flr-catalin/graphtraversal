@@ -4,6 +4,7 @@ import static com.catalin.project.graphtraversal.v2.datatypes.City.FAGARAS;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -13,7 +14,7 @@ import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
-import com.catalin.project.graphtraversal.v2.algorithm.DepthLimitedSearch;
+import com.catalin.project.graphtraversal.v2.algorithm.IterativeDeepeningSearch;
 import com.catalin.project.graphtraversal.v2.datatypes.City;
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
 import com.mxgraph.layout.mxCompactTreeLayout;
@@ -77,6 +78,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		
 		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
 		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ROUNDED, Boolean.TRUE.toString());
+		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FILLCOLOR, "cyan");
 		
 		graphAdapter.setCellsMovable(false);
 		graphAdapter.setEdgeLabelsMovable(false);
@@ -92,6 +94,12 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		return this.graphComponent;
 	}
 
+	/**
+	 * Sets the cell color.
+	 * 
+	 * @param cell the cell
+	 * @param color the color
+	 */
 	private void setCellColor(City cell, String color) {
 		mxGraphModel graphModel = (mxGraphModel) graphComponent.getGraph().getModel();
 		
@@ -100,51 +108,77 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	}
 	
 	/**
+	 * Clears the cell color.
+	 */
+	private void clearCellColor() {
+		mxGraphModel graphModel = (mxGraphModel) graphComponent.getGraph().getModel();
+		Collection<Object> cells = graphModel.getCells().values();
+
+		mxStyleUtils.setCellStyles(graphModel, cells.toArray(),
+				mxConstants.STYLE_FILLCOLOR, "cyan");
+	}
+	
+	/**
 	 * The animation code.
 	 */
 	@Override
 	public void run() {
-//		DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
-//		dfs.execute();
-//		Set<City> traversalSet = dfs.getTraversalSet();
-//		Iterator<City> iterator = traversalSet.iterator();
-		
 //		BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
 //		bfs.execute();
 //		Set<City> traversalSet = bfs.getTraversalSet();
-//		Iterator<City> iterator = traversalSet.iterator();
+//		List<Set<City>> traversalSets = Arrays.asList(traversalSet);
+
+//		DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
+//		dfs.execute();
+//		Set<City> traversalSet = dfs.getTraversalSet();
+//		List<Set<City>> traversalSets = Arrays.asList(traversalSet);
 		
-		DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, 5);
-		dls.execute();
-		Set<City> traversalSet = dls.getTraversalSet(0);
-		Iterator<City> iterator = traversalSet.iterator();
-		
+//		DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, 3);
+//		dls.execute();
+//		Set<City> traversalSet = dls.getTraversalSet();
+//		List<Set<City>> traversalSets = Arrays.asList(traversalSet);
+
+		IterativeDeepeningSearch<City> ids = new IterativeDeepeningSearch<>(FAGARAS, graph, 5);
+		ids.execute();
+		List<Set<City>> traversalSets = ids.getTraversalSets();
 		
 		long beforeTime, timeDiff, sleep;
 		
 		beforeTime = System.currentTimeMillis();
 		
 		while (true) {
-			if (iterator.hasNext()) {
-				setCellColor(iterator.next(), "red");
-			}
-			
-			timeDiff = System.currentTimeMillis() - beforeTime;
-			sleep = delay - timeDiff;
-			
-			if (sleep < 0) {
-				sleep = 2;
-			}
-			
-			try {
-				Thread.sleep(sleep);
-			} catch (InterruptedException e) {
-				String message = String.format("Thread interrupted: %s", e.getMessage());
+			for (Set<City> set : traversalSets) {
+				Iterator<City> setIterator = set.iterator();
 				
-				JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+				while (setIterator.hasNext()) {
+					setCellColor(setIterator.next(), "red");
+					
+					timeDiff = System.currentTimeMillis() - beforeTime;
+					sleep = delay - timeDiff;
+					
+					if (sleep < 0) {
+						sleep = 2;
+					}
+					
+					try {
+						Thread.sleep(sleep);
+					} catch (InterruptedException e) {
+						String message = String.format("Thread interrupted: %s", e.getMessage());
+						JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+					}
+
+					beforeTime = System.currentTimeMillis();
+				}
+				
+				clearCellColor();
+				
+				try {
+					Thread.sleep(150);
+				} catch (InterruptedException e) {
+					String message = String.format("Thread interrupted: %s", e.getMessage());
+					JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
-			
-			beforeTime = System.currentTimeMillis();
 		}
 	}
 	

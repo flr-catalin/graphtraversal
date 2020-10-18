@@ -82,7 +82,7 @@ public class DepthLimitedSearch<V> {
 	 * 
 	 * @return the traversal set
 	 */
-	public Set<V> getTraversalSet(int setCounter) {
+	public Set<V> getTraversalSet() {
 		return this.traversalSet;
 	}
 	
