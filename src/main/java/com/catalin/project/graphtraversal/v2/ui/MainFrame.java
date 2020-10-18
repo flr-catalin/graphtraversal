@@ -1,8 +1,12 @@
 package com.catalin.project.graphtraversal.v2.ui;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.catalin.project.graphtraversal.v2.util.GraphBuilder;
 
@@ -14,6 +18,8 @@ import com.catalin.project.graphtraversal.v2.util.GraphBuilder;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	private JSlider slider;
 	
 	/**
 	 * Creates a new main frame object.
@@ -29,6 +35,22 @@ public class MainFrame extends JFrame {
 		GraphBuilder graphBuilder = GraphBuilder.getInstance();
 		DirectedWeightedGraphPanel directedWeightedGraphPanel = new DirectedWeightedGraphPanel(graphBuilder.buildDefaultDirectedWeightGraph());
 		add(directedWeightedGraphPanel.getGraphComponent());
+
+		this.slider = new JSlider(30, 100);
+		this.slider.setMajorTickSpacing(10);
+		this.slider.setMinorTickSpacing(1);
+		this.slider.setPaintTicks(true);
+		this.slider.setVisible(true);
+		this.slider.setInverted(true);
+		this.slider.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				directedWeightedGraphPanel.setDelay(slider.getValue() != 0 ? slider.getValue() * 10 : 1);
+			}
+			
+		});
+		add(slider, BorderLayout.SOUTH);
 		
 		setResizable(false);
 		pack();

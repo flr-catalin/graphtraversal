@@ -8,7 +8,7 @@ public class WeightedEdge extends DefaultWeightedEdge {
 	
 	@Override
 	public String toString() {
-		return String.valueOf((int) getWeight());
+		return getWeight() != 0f ? String.valueOf((int) getWeight()) : "";
 	}
 
 }

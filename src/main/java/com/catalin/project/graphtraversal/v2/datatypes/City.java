@@ -7,26 +7,26 @@ package com.catalin.project.graphtraversal.v2.datatypes;
  */
 public enum City {
 
-	FAGARAS("FA", 352),
-	SIBIU("SB", 404),
-	BUCURESTI("BU", 207),
-	ORADEA("OR", 621), 
-	ARAD("AR", 621),
-	RAMNICU("RA", 359), 
-	PITESTI("PI", 313), 
-	GIURGIU("GI", 214), 
-	URZICENI("UR", 175), 
-	ZERIND("ZE", 626), 
-	TIMISOARA("TI", 614), 
-	CRAIOVA("CR", 387), 
-	HARSOVA("HA", 91), 
-	VASLUI("VA", 297), 
-	LUGOJ("LU", 561), 
-	DROBETA("DR", 481), 
-	EFORIE("EF", 0), 
-	IASI("IA", 356), 
-	MEHADIA("ME", 507), 
-	NEAMT("NE", 367);
+	FAGARAS("FA"),
+	SIBIU("SB"),
+	BUCURESTI("BU"),
+	ORADEA("OR"), 
+	ARAD("AR"),
+	RAMNICU("RA"),
+	PITESTI("PI"),
+	GIURGIU("GI"),
+	URZICENI("UR"), 
+	ZERIND("ZE"),
+	TIMISOARA("TI"), 
+	CRAIOVA("CR"),
+	HARSOVA("HA"),
+	VASLUI("VA"),
+	LUGOJ("LU"),
+	DROBETA("DR"),
+	EFORIE("EF"), 
+	IASI("IA"),
+	MEHADIA("ME"),
+	NEAMT("NE");
 	
 	/** The two letter code. */
 	private String twoLetterCode;
@@ -38,11 +38,9 @@ public enum City {
 	 * Creates a new city object.
 	 * 
 	 * @param twoLetterCode the two letter code
-	 * @param heuristic the heuristic
 	 */
-	City(String twoLetterCode, int heuristic) {
+	City(String twoLetterCode) {
 		this.twoLetterCode = twoLetterCode;
-		this.heuristic = heuristic;
 	}
 	
 	/**
@@ -53,11 +51,20 @@ public enum City {
 	public int getHeuristic() {
 		return this.heuristic;
 	}
+	
+	/**
+	 * Sets the heuristic
+	 * 
+	 * @param heuristic the heuristic
+	 */
+	public void setHeuristic(int heuristic) {
+		this.heuristic = heuristic;
+	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String toString() {
-		return this.twoLetterCode + " : " + heuristic;
+		return heuristic != 0 ? this.twoLetterCode + " : " + this.heuristic : this.twoLetterCode;
 	}
 	
 }

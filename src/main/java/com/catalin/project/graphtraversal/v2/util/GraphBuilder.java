@@ -21,6 +21,8 @@ import static com.catalin.project.graphtraversal.v2.datatypes.City.URZICENI;
 import static com.catalin.project.graphtraversal.v2.datatypes.City.VASLUI;
 import static com.catalin.project.graphtraversal.v2.datatypes.City.ZERIND;
 
+import java.util.Set;
+
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 import com.catalin.project.graphtraversal.v2.datatypes.City;
@@ -72,45 +74,25 @@ public class GraphBuilder {
 	 * @param graph the graph
 	 */
 	private void addWeigthedEdges(DefaultDirectedWeightedGraph<City, WeightedEdge> graph) {
-		WeightedEdge fagaras_sibiu = graph.addEdge(FAGARAS, SIBIU);
-		WeightedEdge fagaras_bucuresti = graph.addEdge(FAGARAS, BUCURESTI);
-		WeightedEdge sibiu_oradea = graph.addEdge(SIBIU, ORADEA);
-		WeightedEdge sibiu_arad = graph.addEdge(SIBIU, ARAD);
-		WeightedEdge sibiu_ramnicu = graph.addEdge(SIBIU, RAMNICU);
-		WeightedEdge bucuresti_giurgiu = graph.addEdge(BUCURESTI, GIURGIU);
-		WeightedEdge bucuresti_urziceni = graph.addEdge(BUCURESTI, URZICENI);
-		WeightedEdge oradea_zerind = graph.addEdge(ORADEA, ZERIND);
-		WeightedEdge arad_timisoara = graph.addEdge(ARAD, TIMISOARA);
-		WeightedEdge ramnicu_craiova = graph.addEdge(RAMNICU, CRAIOVA);
-		WeightedEdge ramnicu_pitesti = graph.addEdge(RAMNICU, PITESTI);
-		WeightedEdge urziceni_vaslui = graph.addEdge(URZICENI, VASLUI);
-		WeightedEdge urziceni_harsova = graph.addEdge(URZICENI, HARSOVA);
-		WeightedEdge timisoara_lugoj = graph.addEdge(TIMISOARA, LUGOJ);
-		WeightedEdge harsova_eforie = graph.addEdge(HARSOVA, EFORIE);
-		WeightedEdge vaslui_iasi = graph.addEdge(VASLUI, IASI);
-		WeightedEdge lugoj_mehadia = graph.addEdge(LUGOJ, MEHADIA);
-		WeightedEdge iasi_neamt = graph.addEdge(IASI, NEAMT);
-		WeightedEdge mehadia_drobeta = graph.addEdge(MEHADIA, DROBETA);
-		
-		graph.setEdgeWeight(oradea_zerind, 71);
-		graph.setEdgeWeight(sibiu_oradea, 151);
-		graph.setEdgeWeight(sibiu_arad, 140);
-		graph.setEdgeWeight(arad_timisoara, 118);
-		graph.setEdgeWeight(timisoara_lugoj, 111);
-		graph.setEdgeWeight(lugoj_mehadia, 70);
-		graph.setEdgeWeight(mehadia_drobeta, 75);
-		graph.setEdgeWeight(ramnicu_craiova, 146);
-		graph.setEdgeWeight(sibiu_ramnicu, 80);
-		graph.setEdgeWeight(ramnicu_pitesti, 97);
-		graph.setEdgeWeight(fagaras_sibiu, 99);
-		graph.setEdgeWeight(fagaras_bucuresti, 211);
-		graph.setEdgeWeight(bucuresti_giurgiu, 99);
-		graph.setEdgeWeight(bucuresti_urziceni, 85);
-		graph.setEdgeWeight(urziceni_harsova, 98);
-		graph.setEdgeWeight(harsova_eforie, 86);
-		graph.setEdgeWeight(urziceni_vaslui, 142);
-		graph.setEdgeWeight(vaslui_iasi, 92);
-		graph.setEdgeWeight(iasi_neamt, 87);
+		graph.addEdge(FAGARAS, SIBIU);
+		graph.addEdge(FAGARAS, BUCURESTI);
+		graph.addEdge(SIBIU, ORADEA);
+		graph.addEdge(SIBIU, ARAD);
+		graph.addEdge(SIBIU, RAMNICU);
+		graph.addEdge(BUCURESTI, GIURGIU);
+		graph.addEdge(BUCURESTI, URZICENI);
+		graph.addEdge(ORADEA, ZERIND);
+		graph.addEdge(ARAD, TIMISOARA);
+		graph.addEdge(RAMNICU, CRAIOVA);
+		graph.addEdge(RAMNICU, PITESTI);
+		graph.addEdge(URZICENI, VASLUI);
+		graph.addEdge(URZICENI, HARSOVA);
+		graph.addEdge(TIMISOARA, LUGOJ);
+		graph.addEdge(HARSOVA, EFORIE);
+		graph.addEdge(VASLUI, IASI);
+		graph.addEdge(LUGOJ, MEHADIA);
+		graph.addEdge(IASI, NEAMT);
+		graph.addEdge(MEHADIA, DROBETA);
 	}
 
 	/**
@@ -139,6 +121,12 @@ public class GraphBuilder {
 		graph.addVertex(IASI);
 		graph.addVertex(MEHADIA);
 		graph.addVertex(NEAMT);
+		
+		Set<City> vertexSet = graph.vertexSet();
+		
+		for (City city : vertexSet) {
+			city.setHeuristic(999);
+		}
 	}
 
 }

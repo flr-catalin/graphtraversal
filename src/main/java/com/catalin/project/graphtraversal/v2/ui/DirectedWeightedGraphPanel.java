@@ -4,6 +4,8 @@ import static com.catalin.project.graphtraversal.v2.datatypes.City.EFORIE;
 import static com.catalin.project.graphtraversal.v2.datatypes.City.FAGARAS;
 import static com.catalin.project.graphtraversal.v2.datatypes.City.VASLUI;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -16,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 import com.catalin.project.graphtraversal.v2.algorithm.BestFirstSearch;
@@ -24,9 +25,13 @@ import com.catalin.project.graphtraversal.v2.algorithm.BreadthFirstSearch;
 import com.catalin.project.graphtraversal.v2.algorithm.DepthFirstSearch;
 import com.catalin.project.graphtraversal.v2.algorithm.DepthLimitedSearch;
 import com.catalin.project.graphtraversal.v2.algorithm.IterativeDeepeningSearch;
+import com.catalin.project.graphtraversal.v2.algorithm.UniformCostSearch;
 import com.catalin.project.graphtraversal.v2.datatypes.City;
 import com.catalin.project.graphtraversal.v2.datatypes.WeightedEdge;
+import com.catalin.project.graphtraversal.v2.util.GraphModifier;
 import com.mxgraph.layout.mxCompactTreeLayout;
+import com.mxgraph.model.mxCell;
+import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
@@ -42,7 +47,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	/** The JGraphT graph */
-	private DefaultDirectedGraph<City, WeightedEdge> graph;
+	private DefaultDirectedWeightedGraph<City, WeightedEdge> graph;
 	
 	/** The mxGraph graph component */
 	private mxGraphComponent graphComponent;
@@ -54,7 +59,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	private Thread animator;
 	
 	/** The framerate in milliseconds */
-	private int delay = 500;
+	private int delay = 750;
 	
 	/**
 	 * Creates a new directed weigthed graph panel object.
@@ -62,6 +67,8 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	 * @param graph the graph
 	 */
 	public DirectedWeightedGraphPanel(DefaultDirectedWeightedGraph<City, WeightedEdge> graph) {
+		super(new BorderLayout());
+		
 		this.graph = graph;
 		this.graphAdapter = new JGraphXAdapter<City, WeightedEdge>(graph);
 		this.graphComponent = new mxGraphComponent(graphAdapter);
@@ -76,6 +83,11 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	 * Initialises the graph component.
 	 */
 	private void initialiseGraphComponent() {
+		graphComponent.getViewport().setOpaque(true);
+		graphComponent.getViewport().setBackground(Color.decode("#EFC050"));
+		
+		graphAdapter.getModel().beginUpdate();
+		
 		mxCompactTreeLayout compactTreeLayout = new mxCompactTreeLayout(graphAdapter);
 		
 		compactTreeLayout.setHorizontal(false);
@@ -87,11 +99,31 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		
 		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
 		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ROUNDED, Boolean.TRUE.toString());
-		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FILLCOLOR, "cyan");
+		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FILLCOLOR, "#F3E0BE");
+		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FONTSIZE, "13");
+
+		graphAdapter.clearSelection();
+		graphAdapter.selectAll();
+		Object[] selectionCells = graphAdapter.getSelectionCells();
+
+		for (Object c : selectionCells) {
+			mxCell cell = (mxCell) c;
+			mxGeometry geometry = cell.getGeometry();
+
+			if (cell.isVertex()) {
+				geometry.setWidth(60);
+				geometry.setHeight(20);
+			}
+		}
 		
+		graphAdapter.clearSelection();
+		graphAdapter.setCellsSelectable(false);
 		graphAdapter.setCellsMovable(false);
 		graphAdapter.setEdgeLabelsMovable(false);
 		graphAdapter.setVertexLabelsMovable(false);
+		
+		graphAdapter.getModel().endUpdate();
+		graphAdapter.refresh();
 	}
 	
 	/**
@@ -124,7 +156,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		Collection<Object> cells = graphModel.getCells().values();
 
 		mxStyleUtils.setCellStyles(graphModel, cells.toArray(),
-				mxConstants.STYLE_FILLCOLOR, "cyan");
+				mxConstants.STYLE_FILLCOLOR, "#F3E0BE");
 	}
 	
 	/**
@@ -132,6 +164,9 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
+		GraphModifier.getInstance().clearHeuristics(graphAdapter);
+		GraphModifier.getInstance().clearWeights(graph, graphAdapter);
+		
 		BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
 		bfs.execute(VASLUI);
 		List<Set<City>> bfsTraversalSets = Arrays.asList(bfs.getTraversalSet());
@@ -150,17 +185,28 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		ids.execute(VASLUI);
 		List<Set<City>> idsTraversalSets = ids.getTraversalSets();
 		
+		GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);		
 		BestFirstSearch<City> gbfs = new BestFirstSearch<>(FAGARAS, graph);
 		gbfs.execute(EFORIE);
-		Set<City> traversalSet = gbfs.getTraversalSet();
-		List<Set<City>> gbfsTraversalSets = Arrays.asList(traversalSet);
-
+		List<Set<City>> gbfsTraversalSets = Arrays.asList(gbfs.getTraversalSet());
+		
+		GraphModifier.getInstance().clearHeuristics(graphAdapter);
+		GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
+		UniformCostSearch ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
+		ucs.execute(VASLUI);
+		List<Set<City>> ucsTraversalSets = Arrays.asList(ucs.getTraversalSet());
+		
 		while (true) {
+			GraphModifier.getInstance().clearHeuristics(graphAdapter);
+			GraphModifier.getInstance().clearWeights(graph, graphAdapter);
 			animateTraversalSets(bfsTraversalSets, "Breadth First Search", VASLUI);
 			animateTraversalSets(dfsTraversalSets, "Depth First Search", VASLUI);
 			animateTraversalSets(dlsTraversalSets, "Depth Limited Search - Limit: " + dlsLimit, VASLUI);
 			animateTraversalSets(idsTraversalSets, "Iterative Deepening Search - Limit: " + idsLimit, VASLUI);
+			GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);
 			animateTraversalSets(gbfsTraversalSets, "Best First Search", EFORIE);
+			GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
+			animateTraversalSets(ucsTraversalSets, "Uniform Cost Search", VASLUI);
 		}
 	}
 
@@ -182,10 +228,10 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 			
 			while (setIterator.hasNext()) {
 				City next = setIterator.next();
-				setCellColor(next, "red");
+				setCellColor(next, "#92A8D1");
 				
 				if (goalCity != null && !setIterator.hasNext() && goalCity.equals(next)) {
-					setCellColor(next, "blue");
+					setCellColor(next, "#88B04B");
 				}
 				
 				long timeDiff = System.currentTimeMillis() - beforeTime;
@@ -207,6 +253,24 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 			
 			clearCellColor();
 		}
+	}
+
+	/**
+	 * Gets the delay.
+	 * 
+	 * @return the delay
+	 */
+	public int getDelay() {
+		return delay;
+	}
+
+	/**
+	 * Sets the delay.
+	 * 
+	 * @param delay the delay
+	 */
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
 	
 }
