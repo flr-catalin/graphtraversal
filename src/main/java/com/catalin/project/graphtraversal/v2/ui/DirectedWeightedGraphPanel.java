@@ -59,7 +59,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	private Thread animator;
 	
 	/** The framerate in milliseconds */
-	private int delay = 750;
+	private int delay = 650;
 	
 	/**
 	 * Creates a new directed weigthed graph panel object.
@@ -209,6 +209,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 			animateTraversalSets(gbfsTraversalSets, "Best First Search", EFORIE);
 			GraphModifier.getInstance().clearHeuristics(graphAdapter);
 			GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
+			ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
 			ucs.execute(VASLUI);
 			List<Set<City>> ucsTraversalSets = Arrays.asList(ucs.getTraversalSet());
 			animateTraversalSets(ucsTraversalSets, "Uniform Cost Search", VASLUI);
