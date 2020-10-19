@@ -167,49 +167,50 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
-		GraphModifier.getInstance().clearHeuristics(graphAdapter);
-		GraphModifier.getInstance().clearWeights(graph, graphAdapter);
-		
-		BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
-		bfs.execute(VASLUI);
-		List<Set<City>> bfsTraversalSets = Arrays.asList(bfs.getTraversalSet());
-
-		DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
-		dfs.execute(VASLUI);
-		List<Set<City>> dfsTraversalSets = Arrays.asList(dfs.getTraversalSet());
-		
 		int dlsLimit = 3;
-		DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, dlsLimit);
-		dls.execute(VASLUI);
-		List<Set<City>> dlsTraversalSets = Arrays.asList(dls.getTraversalSet());
-
 		int idsLimit = 5;
-		IterativeDeepeningSearch<City> ids = new IterativeDeepeningSearch<>(FAGARAS, graph, idsLimit);
-		ids.execute(VASLUI);
-		List<Set<City>> idsTraversalSets = ids.getTraversalSets();
-		
-		GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);		
-		BestFirstSearch<City> gbfs = new BestFirstSearch<>(FAGARAS, graph);
-		gbfs.execute(EFORIE);
-		List<Set<City>> gbfsTraversalSets = Arrays.asList(gbfs.getTraversalSet());
-		
-		GraphModifier.getInstance().clearHeuristics(graphAdapter);
-		GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
-		UniformCostSearch ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
-		
 		
 		while (true) {
+			// initialisation
 			GraphModifier.getInstance().clearHeuristics(graphAdapter);
 			GraphModifier.getInstance().clearWeights(graph, graphAdapter);
+			
+			// breadth first search
+			BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
+			bfs.execute(VASLUI);
+			List<Set<City>> bfsTraversalSets = Arrays.asList(bfs.getTraversalSet());
 			animateTraversalSets(bfsTraversalSets, "Breadth First Search", VASLUI);
+			
+			// depth first search
+			DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
+			dfs.execute(VASLUI);
+			List<Set<City>> dfsTraversalSets = Arrays.asList(dfs.getTraversalSet());
 			animateTraversalSets(dfsTraversalSets, "Depth First Search", VASLUI);
+			
+			// depth limited search
+			DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, dlsLimit);
+			dls.execute(VASLUI);
+			List<Set<City>> dlsTraversalSets = Arrays.asList(dls.getTraversalSet());
 			animateTraversalSets(dlsTraversalSets, "Depth Limited Search - Limit: " + dlsLimit, VASLUI);
+			
+			// iterative deepening search
+			IterativeDeepeningSearch<City> ids = new IterativeDeepeningSearch<>(FAGARAS, graph, idsLimit);
+			ids.execute(VASLUI);
+			List<Set<City>> idsTraversalSets = ids.getTraversalSets();
 			animateTraversalSets(idsTraversalSets, "Iterative Deepening Search - Limit: " + idsLimit, VASLUI);
+			
+			// best first search
 			GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);
+			GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);		
+			BestFirstSearch<City> gbfs = new BestFirstSearch<>(FAGARAS, graph);
+			gbfs.execute(EFORIE);
+			List<Set<City>> gbfsTraversalSets = Arrays.asList(gbfs.getTraversalSet());
 			animateTraversalSets(gbfsTraversalSets, "Best First Search", EFORIE);
+			
+			// uniform cost search
 			GraphModifier.getInstance().clearHeuristics(graphAdapter);
 			GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
-			ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
+			UniformCostSearch ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
 			ucs.execute(VASLUI);
 			List<Set<City>> ucsTraversalSets = Arrays.asList(ucs.getTraversalSet());
 			animateTraversalSets(ucsTraversalSets, "Uniform Cost Search", VASLUI);
