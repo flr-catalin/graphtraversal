@@ -49,9 +49,9 @@ public class UniformCostSearch {
 
 			@Override
 			public int compare(City o1, City o2) {
-				if (o1.getHeuristic() > o2.getHeuristic()) {
+				if (Integer.parseInt(o1.getHeuristic()) > Integer.parseInt(o2.getHeuristic())) {
 					return 1;
-				} else if (o1.getHeuristic() < o2.getHeuristic()) {
+				} else if (Integer.parseInt(o1.getHeuristic()) < Integer.parseInt(o2.getHeuristic())) {
 					return -1;
 				}
 				return 0;
@@ -68,6 +68,7 @@ public class UniformCostSearch {
 	 * Executes the search.
 	 */
 	public void execute() {
+		System.out.println("All Uniform Cost Search heuristic calculations:");
 		vertexQueue.add(startingVertex);
 		
 		while (!vertexQueue.isEmpty()) {
@@ -76,11 +77,13 @@ public class UniformCostSearch {
 			
 			List<City> neighborListOf = Graphs.successorListOf(graph, startingVertex);
 			for (City vertex : neighborListOf) {
-				vertex.setHeuristic(startingVertex.getHeuristic() + getPathCost(vertex));
+				vertex.setHeuristic(String.valueOf(Integer.parseInt(startingVertex.getHeuristic()) + getPathCost(vertex)));
+				
+				System.out.println("Node: " + vertex + "; Heuristic: " + vertex.getHeuristic());
 				
 				if (!vertexQueue.contains(vertex) || !traversalSet.contains(vertex)) {
 					vertexQueue.add(vertex);
-				} else if (vertexQueue.contains(vertex) && vertex.getHeuristic() > startingVertex.getHeuristic()) {
+				} else if (vertexQueue.contains(vertex) && Integer.parseInt(vertex.getHeuristic()) > Integer.parseInt(startingVertex.getHeuristic())) {
 					mxICell cityCell = graphAdapter.getVertexToCellMap().get(vertex);
 					mxICell parentCell = graphAdapter.getVertexToCellMap().get(startingVertex);
 					cityCell.setParent(parentCell);
@@ -88,6 +91,8 @@ public class UniformCostSearch {
 				}
 			}
 		}
+		
+		System.out.println();
 	}
 	
 	/**
@@ -96,6 +101,8 @@ public class UniformCostSearch {
 	 * @param goalVertex the goal
 	 */
 	public void execute(City goalVertex) {
+		System.out.println("All Uniform Cost Search heuristic calculations:");
+		
 		vertexQueue.add(startingVertex);
 		
 		while (!vertexQueue.isEmpty()) {
@@ -108,11 +115,13 @@ public class UniformCostSearch {
 			
 			List<City> neighborListOf = Graphs.successorListOf(graph, startingVertex);
 			for (City vertex : neighborListOf) {
-				vertex.setHeuristic(startingVertex.getHeuristic() + getPathCost(vertex));
+				vertex.setHeuristic(String.valueOf(Integer.parseInt(startingVertex.getHeuristic()) + getPathCost(vertex)));
+				
+				System.out.println("Node: " + vertex + "; Heuristic: " + vertex.getHeuristic());
 				
 				if (!vertexQueue.contains(vertex) || !traversalSet.contains(vertex)) {
 					vertexQueue.add(vertex);
-				} else if (vertexQueue.contains(vertex) && vertex.getHeuristic() > startingVertex.getHeuristic()) {
+				} else if (vertexQueue.contains(vertex) && Integer.parseInt(vertex.getHeuristic()) > Integer.parseInt(startingVertex.getHeuristic())) {
 					mxICell cityCell = graphAdapter.getVertexToCellMap().get(vertex);
 					mxICell parentCell = graphAdapter.getVertexToCellMap().get(startingVertex);
 					cityCell.setParent(parentCell);
@@ -120,6 +129,8 @@ public class UniformCostSearch {
 				}
 			}
 		}
+		
+		System.out.println();
 	}
 
 	/**

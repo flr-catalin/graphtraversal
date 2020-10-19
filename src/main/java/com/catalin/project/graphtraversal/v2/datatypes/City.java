@@ -32,7 +32,7 @@ public enum City {
 	private String twoLetterCode;
 	
 	/** The heuristic. */
-	private int heuristic;
+	private String heuristic;
 	
 	/**
 	 * Creates a new city object.
@@ -48,7 +48,7 @@ public enum City {
 	 * 
 	 * @return the heuristic
 	 */
-	public int getHeuristic() {
+	public String getHeuristic() {
 		return this.heuristic;
 	}
 	
@@ -57,14 +57,14 @@ public enum City {
 	 * 
 	 * @param heuristic the heuristic
 	 */
-	public void setHeuristic(int heuristic) {
+	public void setHeuristic(String heuristic) {
 		this.heuristic = heuristic;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String toString() {
-		return heuristic != 0 ? this.twoLetterCode + " : " + this.heuristic : this.twoLetterCode;
+		return heuristic != "0" ? this.twoLetterCode + " : " + this.heuristic : this.twoLetterCode;
 	}
 	
 }

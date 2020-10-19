@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -60,7 +61,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 	private Thread animator;
 	
 	/** The framerate in milliseconds */
-	private int delay = 650;
+	private int delay = 500;
 	
 	/**
 	 * Creates a new directed weigthed graph panel object.
@@ -113,7 +114,7 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 				mxGeometry geometry = cell.getGeometry();
 	
 				if (cell.isVertex()) {
-					geometry.setWidth(60);
+					geometry.setWidth(100);
 					geometry.setHeight(20);
 				}
 			}
@@ -172,56 +173,56 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		int idsLimit = 5;
 		
 		while (true) {
-//			// initialisation
-//			GraphModifier.getInstance().clearHeuristics(graphAdapter);
-//			GraphModifier.getInstance().clearWeights(graph, graphAdapter);
-//			
-//			// breadth first search
-//			BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
-//			bfs.execute(VASLUI);
-//			List<Set<City>> bfsTraversalSets = Arrays.asList(bfs.getTraversalSet());
-//			animateTraversalSets(bfsTraversalSets, "Breadth First Search", VASLUI);
-//			
-//			// depth first search
-//			DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
-//			dfs.execute(VASLUI);
-//			List<Set<City>> dfsTraversalSets = Arrays.asList(dfs.getTraversalSet());
-//			animateTraversalSets(dfsTraversalSets, "Depth First Search", VASLUI);
-//			
-//			// depth limited search
-//			DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, dlsLimit);
-//			dls.execute(VASLUI);
-//			List<Set<City>> dlsTraversalSets = Arrays.asList(dls.getTraversalSet());
-//			animateTraversalSets(dlsTraversalSets, "Depth Limited Search - Limit: " + dlsLimit, VASLUI);
-//			
-//			// iterative deepening search
-//			IterativeDeepeningSearch<City> ids = new IterativeDeepeningSearch<>(FAGARAS, graph, idsLimit);
-//			ids.execute(VASLUI);
-//			List<Set<City>> idsTraversalSets = ids.getTraversalSets();
-//			animateTraversalSets(idsTraversalSets, "Iterative Deepening Search - Limit: " + idsLimit, VASLUI);
-//			
-//			// best first search
-//			GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);		
-//			BestFirstSearch<City> gbfs = new BestFirstSearch<>(FAGARAS, graph);
-//			gbfs.execute(EFORIE);
-//			List<Set<City>> gbfsTraversalSets = Arrays.asList(gbfs.getTraversalSet());
-//			animateTraversalSets(gbfsTraversalSets, "Best First Search", EFORIE);
-//			
-//			// uniform cost search
-//			GraphModifier.getInstance().clearHeuristics(graphAdapter);
-//			GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
-//			UniformCostSearch ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
-//			ucs.execute(VASLUI);
-//			List<Set<City>> ucsTraversalSets = Arrays.asList(ucs.getTraversalSet());
-//			animateTraversalSets(ucsTraversalSets, "Uniform Cost Search", VASLUI);
+			// initialisation
+			GraphModifier.getInstance().clearHeuristics(graphAdapter);
+			GraphModifier.getInstance().clearWeights(graph, graphAdapter);
+			
+			// breadth first search
+			BreadthFirstSearch<City> bfs = new BreadthFirstSearch<>(FAGARAS, graph);
+			bfs.execute(VASLUI);
+			List<Set<City>> bfsTraversalSets = Arrays.asList(bfs.getTraversalSet());
+			animateTraversalSets(bfsTraversalSets, "Breadth First Search", VASLUI);
+			
+			// depth first search
+			DepthFirstSearch<City> dfs = new DepthFirstSearch<>(FAGARAS, graph);
+			dfs.execute(VASLUI);
+			List<Set<City>> dfsTraversalSets = Arrays.asList(dfs.getTraversalSet());
+			animateTraversalSets(dfsTraversalSets, "Depth First Search", VASLUI);
+			
+			// depth limited search
+			DepthLimitedSearch<City> dls = new DepthLimitedSearch<>(FAGARAS, graph, dlsLimit);
+			dls.execute(VASLUI);
+			List<Set<City>> dlsTraversalSets = Arrays.asList(dls.getTraversalSet());
+			animateTraversalSets(dlsTraversalSets, "Depth Limited Search - Limit: " + dlsLimit, VASLUI);
+			
+			// iterative deepening search
+			IterativeDeepeningSearch<City> ids = new IterativeDeepeningSearch<>(FAGARAS, graph, idsLimit);
+			ids.execute(VASLUI);
+			List<Set<City>> idsTraversalSets = ids.getTraversalSets();
+			animateTraversalSets(idsTraversalSets, "Iterative Deepening Search - Limit: " + idsLimit, VASLUI);
+			
+			// best first search
+			GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);		
+			BestFirstSearch<City> gbfs = new BestFirstSearch<>(FAGARAS, graph);
+			gbfs.execute(EFORIE);
+			List<Set<City>> gbfsTraversalSets = Arrays.asList(gbfs.getTraversalSet());
+			animateTraversalSets(gbfsTraversalSets, "Best First Search", EFORIE);
+			
+			// uniform cost search
+			GraphModifier.getInstance().clearHeuristics(graphAdapter);
+			GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
+			UniformCostSearch ucs = new UniformCostSearch(FAGARAS, graph, graphAdapter);
+			ucs.execute(VASLUI);
+			List<Set<City>> ucsTraversalSets = Arrays.asList(ucs.getTraversalSet());
+			animateTraversalSets(ucsTraversalSets, "Uniform Cost Search", VASLUI);
 			
 			// a star search
 			GraphModifier.getInstance().initialiseBestFirstSearchHeuristics(graphAdapter);
 			GraphModifier.getInstance().initialiseUniformCostSearchWeights(graph, graphAdapter);
 			AStarSearch ass = new AStarSearch(FAGARAS, graph);
-			ass.execute();
+			ass.execute(EFORIE);
 			List<Set<City>> assTraversalSets = Arrays.asList(ass.getTraversalSet());
-			animateTraversalSets(assTraversalSets, "A* Search", null);
+			animateAStarTraversalSets(assTraversalSets, "A* Search", EFORIE, ass.getHeuristics());
 		}
 	}
 
@@ -243,6 +244,45 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 			
 			while (setIterator.hasNext()) {
 				City next = setIterator.next();
+				setCellColor(next, "#92A8D1");
+				
+				if (goalCity != null && !setIterator.hasNext() && goalCity.equals(next)) {
+					setCellColor(next, "#88B04B");
+				}
+				
+				long timeDiff = System.currentTimeMillis() - beforeTime;
+				long sleep = delay - timeDiff;
+				
+				if (sleep < 0) {
+					sleep = 2;
+				}
+				
+				try {
+					Thread.sleep(sleep);
+				} catch (InterruptedException e) {
+					String message = String.format("Thread interrupted: %s", e.getMessage());
+					JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+				}
+
+				beforeTime = System.currentTimeMillis();
+			}
+			
+			clearCellColor();
+		}
+	}
+	
+	private void animateAStarTraversalSets(List<Set<City>> traversalSets, String title, City goalCity, Map<City, Integer> gScoreMap) {
+		JFrame mainFrame = (JFrame) SwingUtilities.getRoot(graphComponent);
+		mainFrame.setTitle(title);
+		
+		long beforeTime = System.currentTimeMillis();
+		
+		for (Set<City> set : traversalSets) {
+			Iterator<City> setIterator = set.iterator();
+			
+			while (setIterator.hasNext()) {
+				City next = setIterator.next();
+				next.setHeuristic(next.getHeuristic() + "(" + gScoreMap.get(next) + ")");
 				setCellColor(next, "#92A8D1");
 				
 				if (goalCity != null && !setIterator.hasNext() && goalCity.equals(next)) {

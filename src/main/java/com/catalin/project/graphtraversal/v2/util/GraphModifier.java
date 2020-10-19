@@ -64,10 +64,10 @@ public class GraphModifier {
 	 * @param cell the cell
 	 * @param heuristic the heuristic
 	 */
-	public void updateHeuristic(JGraphXAdapter<City, WeightedEdge> graphAdapter, mxCell cell, int heuristic) {
+	public void updateHeuristic(JGraphXAdapter<City, WeightedEdge> graphAdapter, mxCell cell, Integer heuristic) {
 		graphAdapter.getModel().beginUpdate();
 		try {
-			graphAdapter.getCellToVertexMap().get(cell).setHeuristic(heuristic);
+			graphAdapter.getCellToVertexMap().get(cell).setHeuristic(heuristic.toString());
 			graphAdapter.updateCellSize(cell, true);
 		} finally {
 			graphAdapter.getModel().endUpdate();
@@ -86,7 +86,7 @@ public class GraphModifier {
 			Collection<City> cities = graphAdapter.getCellToVertexMap().values();
 			
 			for (City city : cities) {
-				city.setHeuristic(0);
+				city.setHeuristic("0");
 				graphAdapter.updateCellSize(city, true);
 			}
 		} finally {
@@ -107,64 +107,64 @@ public class GraphModifier {
 			for (City city : cities) {
 				switch (city) {
 				case ARAD:
-					city.setHeuristic(621);
+					city.setHeuristic("621");
 					break;
 				case BUCURESTI:
-					city.setHeuristic(207);
+					city.setHeuristic("207");
 					break;
 				case CRAIOVA:
-					city.setHeuristic(387);
+					city.setHeuristic("387");
 					break;
 				case DROBETA:
-					city.setHeuristic(481);
+					city.setHeuristic("481");
 					break;
 				case EFORIE:
-					city.setHeuristic(0);
+					city.setHeuristic("0");
 					break;
 				case FAGARAS:
-					city.setHeuristic(352);
+					city.setHeuristic("352");
 					break;
 				case GIURGIU:
-					city.setHeuristic(214);
+					city.setHeuristic("214");
 					break;
 				case HARSOVA:
-					city.setHeuristic(91);
+					city.setHeuristic("91");
 					break;
 				case IASI:
-					city.setHeuristic(356);
+					city.setHeuristic("356");
 					break;
 				case LUGOJ:
-					city.setHeuristic(561);
+					city.setHeuristic("561");
 					break;
 				case MEHADIA:
-					city.setHeuristic(507);
+					city.setHeuristic("507");
 					break;
 				case NEAMT:
-					city.setHeuristic(367);
+					city.setHeuristic("367");
 					break;
 				case ORADEA:
-					city.setHeuristic(621);
+					city.setHeuristic("621");
 					break;
 				case PITESTI:
-					city.setHeuristic(313);
+					city.setHeuristic("313");
 					break;
 				case RAMNICU:
-					city.setHeuristic(359);
+					city.setHeuristic("359");
 					break;
 				case SIBIU:
-					city.setHeuristic(404);
+					city.setHeuristic("404");
 					break;
 				case TIMISOARA:
-					city.setHeuristic(614);
+					city.setHeuristic("614");
 					break;
 				case URZICENI:
-					city.setHeuristic(175);
+					city.setHeuristic("175");
 					break;
 				case VASLUI:
-					city.setHeuristic(297);
+					city.setHeuristic("297");
 					break;
 				case ZERIND:
-					city.setHeuristic(626);
+					city.setHeuristic("626");
 					break;
 				}
 			}

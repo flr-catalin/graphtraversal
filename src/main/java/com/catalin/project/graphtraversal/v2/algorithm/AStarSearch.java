@@ -30,11 +30,8 @@ public class AStarSearch {
 	/** The graph. */
 	private DefaultDirectedGraph<City, WeightedEdge> graph;
 	
-	/** The g score. */
-	private Map<City, Integer> gScore;
-	
-	/** The f score. */
-	private Map<City, Integer> fScore;
+	/** The heuristics map. */
+	private Map<City, Integer> heuristics;
 	
 	/** Came from map. */
 	private Map<City, City> cameFrom;
@@ -53,8 +50,7 @@ public class AStarSearch {
 		this.currentVertex = startingVertex;
 		this.startingVertex = startingVertex;
 		this.graph = graph;
-		this.gScore = new HashMap<>();
-		this.fScore = new HashMap<>();
+		this.heuristics = new HashMap<>();
 		this.cameFrom = new HashMap<>();
 	}
 	
@@ -62,27 +58,24 @@ public class AStarSearch {
 	 * Executes the search.
 	 */
 	public void execute() {
+		System.out.println("All A* Search heuristic calculations:");
 		openSet.add(currentVertex);
 		
-		gScore.put(currentVertex, 0);
-		fScore.put(currentVertex, currentVertex.getHeuristic());
+		heuristics.put(currentVertex, 0);
 		
 		while (!openSet.isEmpty()) {
 			currentVertex = getFScoreMin();
 			traversalSet.add(currentVertex);
 			
-			System.out.println("Chosen node: " + currentVertex);
-			
 			openSet.remove(currentVertex);
 			List<City> neighborListOf = Graphs.successorListOf(graph, currentVertex);
 			for (City vertex : neighborListOf) {
 				cameFrom.put(vertex, currentVertex);
-				int tentativeGScore = vertex.getHeuristic() + calculatePathCost(vertex);
-				if (tentativeGScore < gScore.getOrDefault(vertex, Integer.MAX_VALUE)) {
-					gScore.put(vertex, tentativeGScore);
-					fScore.put(vertex, gScore.getOrDefault(vertex, Integer.MAX_VALUE));
+				int tentativeGScore = Integer.parseInt(vertex.getHeuristic()) + calculatePathCost(vertex);
+				if (tentativeGScore < heuristics.getOrDefault(vertex, Integer.MAX_VALUE)) {
+					heuristics.put(vertex, tentativeGScore);
 					
-					System.out.println("Node: " + vertex + "; f(node)=" + gScore.getOrDefault(vertex, Integer.MAX_VALUE));
+					System.out.println("Node: " + vertex + "; Heuristic: " + heuristics.getOrDefault(vertex, Integer.MAX_VALUE));
 					
 					if (!openSet.contains(vertex)) {
 						openSet.add(vertex);
@@ -90,6 +83,45 @@ public class AStarSearch {
 				}
 			}
 		}
+		
+		System.out.println();
+	}
+	
+	/**
+	 * Executes the search with a goal node.
+	 */
+	public void execute(City goalVertex) {
+		System.out.println("All A* Search heuristic calculations:");
+		openSet.add(currentVertex);
+		
+		heuristics.put(currentVertex, 0);
+		
+		while (!openSet.isEmpty()) {
+			currentVertex = getFScoreMin();
+			traversalSet.add(currentVertex);
+			
+			if (currentVertex.equals(goalVertex)) {
+				return;
+			}
+			
+			openSet.remove(currentVertex);
+			List<City> neighborListOf = Graphs.successorListOf(graph, currentVertex);
+			for (City vertex : neighborListOf) {
+				cameFrom.put(vertex, currentVertex);
+				int tentativeGScore = Integer.parseInt(vertex.getHeuristic()) + calculatePathCost(vertex);
+				if (tentativeGScore < heuristics.getOrDefault(vertex, Integer.MAX_VALUE)) {
+					heuristics.put(vertex, tentativeGScore);
+					
+					System.out.println("Node: " + vertex + "; Heuristic: " + heuristics.getOrDefault(vertex, Integer.MAX_VALUE));
+					
+					if (!openSet.contains(vertex)) {
+						openSet.add(vertex);
+					}
+				}
+			}
+		}
+		
+		System.out.println();
 	}
 	
 	/**
@@ -129,8 +161,8 @@ public class AStarSearch {
 		
 		while (iterator.hasNext()) {
 			City next = iterator.next();
-			if (gScore.get(next) < fScoreMin) {
-				fScoreMin = gScore.get(next);
+			if (heuristics.get(next) < fScoreMin) {
+				fScoreMin = heuristics.get(next);
 				cityWithFScoreMin = next;
 			}
 		}
@@ -145,6 +177,15 @@ public class AStarSearch {
 	 */
 	public Set<City> getTraversalSet() {
 		return this.traversalSet;
+	}
+	
+	/**
+	 * Gets the heuristics map.
+	 * 
+	 * @return the heuristics map
+	 */
+	public Map<City, Integer> getHeuristics() {
+		return this.heuristics;
 	}
 
 }

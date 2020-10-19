@@ -49,9 +49,11 @@ public class BestFirstSearch<V> {
 			@Override
 			public int compare(V o1, V o2) {
 				if (o1 instanceof City && o2 instanceof City) {
-					if (((City) o1).getHeuristic() > ((City) o2).getHeuristic()) {
+					City city1 = (City) o1;
+					City city2 = (City) o2;
+					if (Integer.parseInt(city1.getHeuristic()) > Integer.parseInt(city2.getHeuristic())) {
 						return 1;
-					} else if (((City) o1).getHeuristic() < ((City) o2).getHeuristic()) {
+					} else if (Integer.parseInt(city1.getHeuristic()) < Integer.parseInt(city2.getHeuristic())) {
 						return -1;
 					}
 				}

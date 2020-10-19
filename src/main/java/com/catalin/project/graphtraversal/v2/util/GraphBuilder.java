@@ -125,7 +125,7 @@ public class GraphBuilder {
 		Set<City> vertexSet = graph.vertexSet();
 		
 		for (City city : vertexSet) {
-			city.setHeuristic(999);
+			city.setHeuristic("999 (999)");
 		}
 	}
 

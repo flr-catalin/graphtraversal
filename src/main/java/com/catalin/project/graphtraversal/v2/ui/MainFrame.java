@@ -39,8 +39,8 @@ public class MainFrame extends JFrame {
 		add(directedWeightedGraphPanel.getGraphComponent());
 		setTitle(firstSearchName);
 		
-		this.slider = new JSlider(200, 750);
-		this.slider.setMajorTickSpacing(10);
+		this.slider = new JSlider(400, 1000);
+		this.slider.setMajorTickSpacing(100);
 		this.slider.setMinorTickSpacing(0);
 		this.slider.setPaintTicks(true);
 		this.slider.setVisible(true);
