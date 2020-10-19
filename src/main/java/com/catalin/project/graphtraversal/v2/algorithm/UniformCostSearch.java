@@ -76,16 +76,15 @@ public class UniformCostSearch {
 			
 			List<City> neighborListOf = Graphs.successorListOf(graph, startingVertex);
 			for (City vertex : neighborListOf) {
-				City city = (City) vertex;
-				city.setHeuristic(startingVertex.getHeuristic() + getPathCost(city));
+				vertex.setHeuristic(startingVertex.getHeuristic() + getPathCost(vertex));
 				
-				if (!vertexQueue.contains(city) || !traversalSet.contains(city)) {
-					vertexQueue.add(city);
-				} else if (vertexQueue.contains(city) && city.getHeuristic() > startingVertex.getHeuristic()) {
-					mxICell cityCell = graphAdapter.getVertexToCellMap().get(city);
+				if (!vertexQueue.contains(vertex) || !traversalSet.contains(vertex)) {
+					vertexQueue.add(vertex);
+				} else if (vertexQueue.contains(vertex) && vertex.getHeuristic() > startingVertex.getHeuristic()) {
+					mxICell cityCell = graphAdapter.getVertexToCellMap().get(vertex);
 					mxICell parentCell = graphAdapter.getVertexToCellMap().get(startingVertex);
 					cityCell.setParent(parentCell);
-					vertexQueue.add(city);
+					vertexQueue.add(vertex);
 				}
 			}
 		}
@@ -109,16 +108,15 @@ public class UniformCostSearch {
 			
 			List<City> neighborListOf = Graphs.successorListOf(graph, startingVertex);
 			for (City vertex : neighborListOf) {
-				City city = (City) vertex;
-				city.setHeuristic(startingVertex.getHeuristic() + getPathCost(city));
+				vertex.setHeuristic(startingVertex.getHeuristic() + getPathCost(vertex));
 				
-				if (!vertexQueue.contains(city) || !traversalSet.contains(city)) {
-					vertexQueue.add(city);
-				} else if (vertexQueue.contains(city) && city.getHeuristic() > startingVertex.getHeuristic()) {
-					mxICell cityCell = graphAdapter.getVertexToCellMap().get(city);
+				if (!vertexQueue.contains(vertex) || !traversalSet.contains(vertex)) {
+					vertexQueue.add(vertex);
+				} else if (vertexQueue.contains(vertex) && vertex.getHeuristic() > startingVertex.getHeuristic()) {
+					mxICell cityCell = graphAdapter.getVertexToCellMap().get(vertex);
 					mxICell parentCell = graphAdapter.getVertexToCellMap().get(startingVertex);
 					cityCell.setParent(parentCell);
-					vertexQueue.add(city);
+					vertexQueue.add(vertex);
 				}
 			}
 		}
