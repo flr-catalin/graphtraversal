@@ -6,7 +6,7 @@
     <artifactId>graphtraversal</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
-    <name>Sample JGraphT Application</name>
+    <name>JGraphT Graph Traversal Application</name>
     
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,10 +41,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>3.8.0</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>11</source>
+					<target>11</target>
 				</configuration>
 			</plugin>
 		</plugins>
