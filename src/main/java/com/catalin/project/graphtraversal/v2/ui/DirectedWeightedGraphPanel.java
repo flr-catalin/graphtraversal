@@ -88,42 +88,45 @@ public class DirectedWeightedGraphPanel extends JPanel implements Runnable {
 		
 		graphAdapter.getModel().beginUpdate();
 		
-		mxCompactTreeLayout compactTreeLayout = new mxCompactTreeLayout(graphAdapter);
-		
-		compactTreeLayout.setHorizontal(false);
-		compactTreeLayout.setNodeDistance(50);
-		compactTreeLayout.execute(graphAdapter.getDefaultParent());
-		
-		mxGraphModel graphModel = (mxGraphModel) graphComponent.getGraph().getModel();
-		Collection<Object> cells = graphModel.getCells().values();
-		
-		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
-		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ROUNDED, Boolean.TRUE.toString());
-		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FILLCOLOR, "#F3E0BE");
-		mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FONTSIZE, "13");
-
-		graphAdapter.clearSelection();
-		graphAdapter.selectAll();
-		Object[] selectionCells = graphAdapter.getSelectionCells();
-
-		for (Object c : selectionCells) {
-			mxCell cell = (mxCell) c;
-			mxGeometry geometry = cell.getGeometry();
-
-			if (cell.isVertex()) {
-				geometry.setWidth(60);
-				geometry.setHeight(20);
+		try {
+			mxCompactTreeLayout compactTreeLayout = new mxCompactTreeLayout(graphAdapter);
+			
+			compactTreeLayout.setHorizontal(false);
+			compactTreeLayout.setNodeDistance(50);
+			compactTreeLayout.execute(graphAdapter.getDefaultParent());
+			
+			mxGraphModel graphModel = (mxGraphModel) graphComponent.getGraph().getModel();
+			Collection<Object> cells = graphModel.getCells().values();
+			
+			mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
+			mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ROUNDED, Boolean.TRUE.toString());
+			mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FILLCOLOR, "#F3E0BE");
+			mxStyleUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FONTSIZE, "13");
+	
+			graphAdapter.clearSelection();
+			graphAdapter.selectAll();
+			Object[] selectionCells = graphAdapter.getSelectionCells();
+	
+			for (Object c : selectionCells) {
+				mxCell cell = (mxCell) c;
+				mxGeometry geometry = cell.getGeometry();
+	
+				if (cell.isVertex()) {
+					geometry.setWidth(60);
+					geometry.setHeight(20);
+				}
 			}
+			
+			graphAdapter.clearSelection();
+			graphAdapter.setCellsSelectable(false);
+			graphAdapter.setCellsMovable(false);
+			graphAdapter.setEdgeLabelsMovable(false);
+			graphAdapter.setVertexLabelsMovable(false);
+		} finally {
+			graphAdapter.getModel().endUpdate();
+			graphAdapter.refresh();
 		}
 		
-		graphAdapter.clearSelection();
-		graphAdapter.setCellsSelectable(false);
-		graphAdapter.setCellsMovable(false);
-		graphAdapter.setEdgeLabelsMovable(false);
-		graphAdapter.setVertexLabelsMovable(false);
-		
-		graphAdapter.getModel().endUpdate();
-		graphAdapter.refresh();
 	}
 	
 	/**

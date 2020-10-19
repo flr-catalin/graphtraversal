@@ -68,8 +68,6 @@ public class UniformCostSearch {
 	 * Executes the search.
 	 */
 	public void execute() {
-		graphAdapter.getModel().beginUpdate();
-		
 		vertexQueue.add(startingVertex);
 		
 		while (!vertexQueue.isEmpty()) {
@@ -91,9 +89,6 @@ public class UniformCostSearch {
 				}
 			}
 		}
-		
-		graphAdapter.getModel().endUpdate();
-		graphAdapter.refresh();
 	}
 	
 	/**
@@ -102,8 +97,6 @@ public class UniformCostSearch {
 	 * @param goalVertex the goal
 	 */
 	public void execute(City goalVertex) {
-		graphAdapter.getModel().beginUpdate();
-		
 		vertexQueue.add(startingVertex);
 		
 		while (!vertexQueue.isEmpty()) {
@@ -111,9 +104,6 @@ public class UniformCostSearch {
 			traversalSet.add(startingVertex);
 			
 			if (startingVertex.equals(goalVertex)) {
-				graphAdapter.getModel().endUpdate();
-				graphAdapter.refresh();
-				
 				return;
 			}
 			
@@ -132,9 +122,6 @@ public class UniformCostSearch {
 				}
 			}
 		}
-		
-		graphAdapter.getModel().endUpdate();
-		graphAdapter.refresh();
 	}
 
 	/**

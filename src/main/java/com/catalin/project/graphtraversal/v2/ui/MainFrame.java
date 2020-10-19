@@ -21,6 +21,8 @@ public class MainFrame extends JFrame {
 	
 	private JSlider slider;
 	
+	private String firstSearchName = "Breadth First Search";
+	
 	/**
 	 * Creates a new main frame object.
 	 */
@@ -35,10 +37,11 @@ public class MainFrame extends JFrame {
 		GraphBuilder graphBuilder = GraphBuilder.getInstance();
 		DirectedWeightedGraphPanel directedWeightedGraphPanel = new DirectedWeightedGraphPanel(graphBuilder.buildDefaultDirectedWeightGraph());
 		add(directedWeightedGraphPanel.getGraphComponent());
-
-		this.slider = new JSlider(20, 100);
+		setTitle(firstSearchName);
+		
+		this.slider = new JSlider(200, 750);
 		this.slider.setMajorTickSpacing(10);
-		this.slider.setMinorTickSpacing(1);
+		this.slider.setMinorTickSpacing(0);
 		this.slider.setPaintTicks(true);
 		this.slider.setVisible(true);
 		this.slider.setInverted(true);
@@ -46,7 +49,7 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				directedWeightedGraphPanel.setDelay(slider.getValue() * 10);
+				directedWeightedGraphPanel.setDelay(slider.getValue());
 			}
 			
 		});
